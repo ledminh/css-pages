@@ -38,6 +38,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/css/1',
+      name: 'css1',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Css1/reducer'),
+          import('containers/Css1/sagas'),
+          import('containers/Css1'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('css1', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
