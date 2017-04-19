@@ -4,4 +4,8 @@ export const links = [
     name: "Bouncing Ball"
   },
 
+  {
+    link: '/css/2',
+    name: "Another Ball"
+  },
 ];

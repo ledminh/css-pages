@@ -58,6 +58,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/css/2',
+      name: 'css2',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Css2/reducer'),
+          import('containers/Css2/sagas'),
+          import('containers/Css2'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('css2', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
