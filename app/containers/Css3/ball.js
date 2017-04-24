@@ -46,7 +46,7 @@ const Ball =  styled.div`
   overflow: hidden;
   animation: ${props => spring_like(props.endpoint)} 3s cubic-bezier(.36,.57,.77,.44) infinite alternate;
 
-  background: linear-gradient(white, gray);
+  background: radial-gradient(circle at 20% 20%, white, black);
 
   &::before {
     content: "";
@@ -97,6 +97,9 @@ const Shadow = styled.div`
   height: 10px;
   margin: auto;
   margin-top: 0px;
+
+  filter:blur(5px);
+
   text-align: center;
 
   animation: ${props => shadowAnimate(props.endpoint)} 3s cubic-bezier(.36,.57,.77,.44) infinite alternate;
