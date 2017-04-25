@@ -142,6 +142,46 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/css/6',
+      name: 'css6',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Css6/reducer'),
+          import('containers/Css6/sagas'),
+          import('containers/Css6'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('css6', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/css/7',
+      name: 'css7',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Css7/reducer'),
+          import('containers/Css7/sagas'),
+          import('containers/Css7'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('css7', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

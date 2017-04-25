@@ -1,5 +1,20 @@
 export const links = [
   {
+    link: '/css/7',
+    name: "Fibonacci Box"
+  },
+
+  {
+    link: '/css/6',
+    name: "Rolling Cube"
+  },
+
+  {
+    link: '/css/5',
+    name: "3D Ball"
+  },
+
+  {
     link: '/css/4',
     name: "Greeen Field"
   },
