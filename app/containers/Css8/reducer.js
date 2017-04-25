@@ -9,43 +9,47 @@ import { fromJS } from 'immutable';
 import {
   MOVE,
   RELOCATE,
-  SET_NEW_NUMBER,
-  RESET
+  SET_NEW_NUMBER
 } from './constants';
+
+import nextColor from './utils/next-color';
 
 const initialState = fromJS({
   slide_data: {
     slide_1: {
-      left: '-50%',
-      value: 1
+      left: '-100%',
+      value: {
+        start : 'rgb(0,0,2)',
+        end : 'rgb(0,0, 1)'
+      }
     },
 
     slide_2: {
       left: '0%',
-      value: 1
+      value: {
+        start : 'rgb(0,0,1)',
+        end : 'rgb(0,0, 0)'
+      }
     },
 
     slide_3: {
-      left: '50%',
-      value: 2
+      left: '100%',
+      value: {
+        start : 'rgb(0,0,3)',
+        end : 'rgb(0,0, 2)'
+      }
     }
   },
 
-  move: false,
-  reset_count: 0
+  move: false
 });
 
-function css7Reducer(state = initialState, action) {
+function css8Reducer(state = initialState, action) {
   switch (action.type) {
-    case RESET:
-      return state
-                .set('reset_count', 1);
-
     case MOVE:
-      let s1_Left = parseInt(state.getIn(['slide_data', 'slide_1', 'left'])) + 50 + '%',
-          s2_Left = parseInt(state.getIn(['slide_data', 'slide_2', 'left'])) + 50 + '%',
-          s3_Left = parseInt(state.getIn(['slide_data', 'slide_3', 'left'])) + 50 + '%';
-
+      let s1_Left = parseInt(state.getIn(['slide_data', 'slide_1', 'left'])) + 100 + '%',
+          s2_Left = parseInt(state.getIn(['slide_data', 'slide_2', 'left'])) + 100 + '%',
+          s3_Left = parseInt(state.getIn(['slide_data', 'slide_3', 'left'])) + 100 + '%';
 
       return state
                 .set('move', true)
@@ -56,7 +60,7 @@ function css7Reducer(state = initialState, action) {
     case RELOCATE:
        let left = relocateData(parseInt(state.getIn(['slide_data', 'slide_1', 'left'])),
                                parseInt(state.getIn(['slide_data', 'slide_2', 'left'])),
-                               parseInt(state.getIn(['slide_data', 'slide_3', 'left'])),);
+                               parseInt(state.getIn(['slide_data', 'slide_3', 'left'])));
 
        return state
                 .set('move', false)
@@ -65,13 +69,11 @@ function css7Reducer(state = initialState, action) {
                 .setIn(['slide_data', 'slide_3', 'left'], left.s3);
 
     case SET_NEW_NUMBER:
-        let value = getValue(state.get('reset_count'),
-                             state.getIn(['slide_data', 'slide_1']).toJS(),
+        let value = getValue(state.getIn(['slide_data', 'slide_1']).toJS(),
                              state.getIn(['slide_data', 'slide_2']).toJS(),
                              state.getIn(['slide_data', 'slide_3']).toJS());
 
         return state
-                .set('reset_count', value.reset_count)
                 .setIn(['slide_data', 'slide_1', 'value'], value.s1)
                 .setIn(['slide_data', 'slide_2', 'value'],  value.s2)
                 .setIn(['slide_data', 'slide_3', 'value'],  value.s3);
@@ -81,23 +83,23 @@ function css7Reducer(state = initialState, action) {
 }
 
 function relocateData(s1_Left, s2_Left, s3_Left){
+
   return {
-    s1: (s1_Left === 100)? -50  +  '%' : s1_Left + '%',
-    s2: (s2_Left === 100)? -50  + '%': s2_Left + '%',
-    s3: (s3_Left === 100)? -50  +  '%': s3_Left + '%'
+    s1: (s1_Left === 200)? -100  +  '%' : s1_Left + '%',
+    s2: (s2_Left === 200)? -100  + '%': s2_Left + '%',
+    s3: (s3_Left === 200)? -100  +  '%': s3_Left + '%'
   }
 
 }
 
-function getValue(reset_count, s1, s2, s3) {
+function getValue(s1, s2, s3) {
 
   return {
-    s1: (s1.left === '-50%')? ((reset_count === 0)? s2.value + s3.value : 1) : s1.value,
-    s2: (s2.left === '-50%')? ((reset_count === 0)? s1.value + s3.value : 1) : s2.value,
-    s3: (s3.left === '-50%')? ((reset_count === 0)? s1.value + s2.value : 1) : s3.value,
-    reset_count: (reset_count === 1)? 2 : 0
+    s1: (s1.left === '-100%')? nextColor(s2.value) : s1.value,
+    s2: (s2.left === '-100%')? nextColor(s3.value) : s2.value,
+    s3: (s3.left === '-100%')? nextColor(s1.value) : s3.value
   }
 }
 
 
-export default css7Reducer;
+export default css8Reducer;

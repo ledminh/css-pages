@@ -182,6 +182,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/css/8',
+      name: 'css8',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Css8/reducer'),
+          import('containers/Css8/sagas'),
+          import('containers/Css8'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('css8', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
